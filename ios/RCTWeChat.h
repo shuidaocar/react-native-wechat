@@ -1,11 +1,3 @@
-//
-//  RCTWeChat.h
-//  RCTWeChat
-//
-//  Created by Yorkie Liu on 10/16/15.
-//  Copyright © 2015 WeFlex. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -22,7 +14,6 @@
 #define RCTWXShareTypeVideo @"video"
 #define RCTWXShareTypeAudio @"audio"
 #define RCTWXShareTypeFile @"file"
-#define RCTWXShareTypeMini @"mini"
 
 #define RCTWXShareType @"type"
 #define RCTWXShareTitle @"title"
@@ -31,6 +22,7 @@
 #define RCTWXShareImageUrl @"imageUrl"
 
 #define RCTWXEventName @"WeChat_Resp"
+#define RCTWXEventNameWeChatReq @"WeChat_Req"
 
 @interface RCTWeChat : NSObject <RCTBridgeModule, WXApiDelegate>
 
