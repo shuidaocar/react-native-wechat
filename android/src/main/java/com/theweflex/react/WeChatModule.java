@@ -568,7 +568,7 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
                         msg.thumbData = bitmapResizeGetBytes(bmp, 128);
                     } else {
                         // TODO thumbData不能为空，现在GIF图片获取的bmp为null，需要确定是什么原因
-                        msg.thumbData = new Byte[0];
+                        msg.thumbData = new byte[0];
                     }
                     // 构造一个Req
                     SendMessageToWX.Req req = new SendMessageToWX.Req();

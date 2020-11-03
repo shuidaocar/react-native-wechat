@@ -111,15 +111,26 @@ RCT_EXPORT_MODULE()
     return data;
 }
 
-// old version
-//RCT_EXPORT_METHOD(registerApp:(NSString *)appid
-//                  :(RCTResponseSenderBlock)callback)
-//{
-//    self.appId = appid;
-//    callback(@[[WXApi registerApp:appid] ? [NSNull null] : INVOKE_FAILED]);
-//}
+// 在register之前打开log, 后续可以根据log排查问题
+RCT_EXPORT_METHOD(startLogByLevel :(RCTResponseSenderBlock)callback)
+{
+    [WXApi startLogByLevel:WXLogLevelDetail logBlock:^(NSString *log) {
+        NSLog(@"WeChatSDK: %@", log);
+    }];
+    
+    callback(@[([NSNull null])]);
+}
 
-// new version
+// 调用自检函数, 在registerApp成功后调用
+RCT_EXPORT_METHOD(checkUniversalLink :(RCTResponseSenderBlock)callback)
+{
+     [WXApi checkUniversalLinkReady:^(WXULCheckStep step, WXCheckULStepResult* result) {
+         NSLog(@"%@, %u, %@, %@", @(step), result.success, result.errorInfo, result.suggestion);
+     }];
+    
+    callback(@[([NSNull null])]);
+}
+
 RCT_EXPORT_METHOD(registerApp:(NSString *)appid
                   :(NSString *)universalLink
                   :(RCTResponseSenderBlock)callback)
@@ -127,13 +138,6 @@ RCT_EXPORT_METHOD(registerApp:(NSString *)appid
     self.appId = appid;
     callback(@[[WXApi registerApp:appid universalLink:universalLink] ? [NSNull null] : INVOKE_FAILED]);
 }
-
-//RCT_EXPORT_METHOD(registerAppWithDescription:(NSString *)appid
-//                  :(NSString *)appdesc
-//                  :(RCTResponseSenderBlock)callback)
-//{
-//    callback(@[[WXApi registerApp:appid withDescription:appdesc] ? [NSNull null] : INVOKE_FAILED]);
-//}
 
 RCT_EXPORT_METHOD(isWXAppInstalled:(RCTResponseSenderBlock)callback)
 {
