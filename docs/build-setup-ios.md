@@ -8,6 +8,11 @@ Add the following libraries to your "Link Binary with Libraries" in Targets > Bu
 - [x] `libc++`
 - [x] `libz`
 
+Add `pod 'WechatOpenSDK'` to `Podfile` and execute
+```shell
+pod install
+```
+
 Add "URL Schema" as your app id for "URL type" in Targets > info, See 
 the following screenshot for the view on your XCode:
 
@@ -24,6 +29,31 @@ then add:
   <string>wechat</string>
 </array>
 ```
+
+若需要处理universal links，则在`AppDelegate.m`中添加如下方法，并在`AppDelegate.h`中引入`WXApi.h`文件和添加协议`WXApiDelegate`
+
+Step1:
+
+```
+#import "WXApi.h"
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate, WXApiDelegate>
+```
+
+Step2:
+
+```
+// AppDelegate.m didFinishLaunchingWithOptions方法中添加如下方法
+// 处理Universal Links跳转进来的请求
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(nonnull void (^)(NSArray * _Nullable))restorationHandler
+{
+    NSLog(@"%@", userActivity.webpageURL);
+    
+    return [WXApi handleOpenUniversalLink:userActivity delegate:self];
+}
+```
+
+
 
 Then copy the following in `AppDelegate.m`:
 
@@ -45,3 +75,4 @@ sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 ```
+
